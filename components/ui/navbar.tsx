@@ -1,11 +1,3 @@
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@radix-ui/react-navigation-menu";
 import React from "react";
 import { Button } from "./button";
 
@@ -17,7 +9,7 @@ function Navbar() {
           <a href="/">SANYUK</a>
         </h1>
         <div className="flex gap-2">
-          <Button variant="default" size="sm">
+          <Button variant="primary" size="sm">
             Sign In
           </Button>
           <Button variant="secondary" size="sm">

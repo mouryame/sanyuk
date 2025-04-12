@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
-import { Button } from "@/components/ui/button";
 import Navbar from "@/components/ui/navbar";
 import Footer from "@/components/ui/footer";
 
@@ -22,13 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Navbar />
-      <body className={`${quicksand.variable} antialiased`}>{children}</body>
-      <div className="flex items-center justify-center w-full">
-        <div className="fixed bottom-0 h-30 w-full pl-20 pr-20">
+      <body className={`${quicksand.variable} antialiased`}>
+        <Navbar />
+        {children}
+
+        <div className="fixed bottom-0 h-30 w-full max-w-600 w-full m-auto p-4">
           <Footer />
         </div>
-      </div>
+      </body>
     </html>
   );
 }
