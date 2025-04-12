@@ -1,8 +1,4 @@
 import React from "react";
-import { FaLinkedin } from "react-icons/fa";
-import { HiOutlineMailOpen } from "react-icons/hi";
-import { IoIosPhonePortrait } from "react-icons/io";
-
 function Footer() {
   return (
     <div className="flex items-center justify-center ">
