@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/ui/navbar";
-import Footer from "@/components/ui/footer";
+import { Button } from "@/components/ui/button";
 
 const quicksand = Quicksand({
   variable: "--font-quicksand",
@@ -22,12 +21,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${quicksand.variable} antialiased`}>
-        <Navbar />
+        <Button>Button</Button>
         {children}
-
-        <div className="fixed bottom-0 h-30 w-full max-w-600 w-full m-auto p-4">
-          <Footer />
-        </div>
       </body>
     </html>
   );
