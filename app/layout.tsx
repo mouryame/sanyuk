@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Quicksand } from "next/font/google";
 import "./globals.css";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/ui/navbar";
 import Footer from "@/components/ui/footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const quicksand = Quicksand({
+  variable: "--font-quicksand",
   subsets: ["latin"],
 });
 
@@ -28,11 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Navbar />
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body className={`${quicksand.variable} antialiased`}>{children}</body>
       <div className="flex items-center justify-center w-full">
         <div className="fixed bottom-0 h-30 w-full pl-20 pr-20">
           <Footer />
