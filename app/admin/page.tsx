@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRouter } from "next/navigation";
+import logger from "@/utils/logger";
 
 type PageStatus = "in_edit" | "under_review" | "deployed";
 
@@ -57,7 +58,7 @@ export default function AdminPage() {
       console.log("Local data loaded");
     } else {
       localStorage.setItem("pages", JSON.stringify(initialData));
-      setPages(initialData);
+      setPages(initialData as PageData[]);
     }
   }, []);
 
@@ -69,25 +70,26 @@ export default function AdminPage() {
     const updated = pages.filter(
       (page) => !selectedPages.includes(page.pageId)
     );
-    console.log("Row Deleted");
+    logger.log("Row Deleted");
     setPages(updated);
     updateLocalStorage(updated);
     setSelectedPages([]);
   };
   return (
-    <div className="p-6 space-y-4 -z-1">
-      <div className="flex justify-between items-center">
+    <div className=" p-6 space-y-4 w-full">
+      <div className="flex justify-between items-center space-x-4">
         <Input
           placeholder="Search by title or topic..."
-          className="max-w-sm -z-1"
+          className="min-w-20 max-w-70 w-full"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <div className="flex gap-2">
+        <div className="flex gap-2 ">
           <Button
             variant="destructive"
             onClick={handleDelete}
             disabled={selectedPages.length === 0}
+            className="min-w-10 max-w-30"
           >
             Delete Selected
           </Button>
@@ -98,64 +100,69 @@ export default function AdminPage() {
           >
             Deploy Selected
           </Button>
-          <Button onClick={() => router.push("/admin/create")}>
+          <Button
+            onClick={() => router.push("/admin/create")}
+            className="md:max-w-[120px] md:max-text-[0.8rem]"
+          >
             Create Page
           </Button>
         </div>
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>
-              <Checkbox
-                checked={selectedPages.length === filteredPages.length}
-                onCheckedChange={(checked) =>
-                  setSelectedPages(
-                    checked ? filteredPages.map((p) => p.pageId) : []
-                  )
-                }
-              />
-            </TableHead>
-            <TableHead>Page ID</TableHead>
-            <TableHead>Topic</TableHead>
-            <TableHead>Title</TableHead>
-            <TableHead>Created At</TableHead>
-            <TableHead>Created By</TableHead>
-            <TableHead>Updated At</TableHead>
-            <TableHead>Updated By</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredPages.map((page) => (
-            <TableRow key={page.pageId}>
-              <TableCell>
+      <div className="w-full overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>
                 <Checkbox
-                  checked={selectedPages.includes(page.pageId)}
-                  onCheckedChange={() => toggleSelect(page.pageId)}
+                  checked={selectedPages.length === filteredPages.length}
+                  onCheckedChange={(checked) =>
+                    setSelectedPages(
+                      checked ? filteredPages.map((p) => p.pageId) : []
+                    )
+                  }
                 />
-              </TableCell>
-              <TableCell>{page.pageId}</TableCell>
-              <TableCell>{page.topic}</TableCell>
-              <TableCell>{page.title}</TableCell>
-              <TableCell>{page.createdAt}</TableCell>
-              <TableCell>{page.createdBy}</TableCell>
-              <TableCell>{page.updatedAt}</TableCell>
-              <TableCell>{page.updatedBy}</TableCell>
-              <TableCell>{page.status}</TableCell>
-              <TableCell className="space-x-2">
-                <Button variant="outline" size="sm">
-                  Edit
-                </Button>
-                <Button variant="outline" size="sm">
-                  Preview
-                </Button>
-              </TableCell>
+              </TableHead>
+              <TableHead>Page ID</TableHead>
+              <TableHead>Topic</TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead>Created At</TableHead>
+              <TableHead>Created By</TableHead>
+              <TableHead>Updated At</TableHead>
+              <TableHead>Updated By</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {filteredPages.map((page) => (
+              <TableRow key={page.pageId}>
+                <TableCell>
+                  <Checkbox
+                    checked={selectedPages.includes(page.pageId)}
+                    onCheckedChange={() => toggleSelect(page.pageId)}
+                  />
+                </TableCell>
+                <TableCell>{page.pageId}</TableCell>
+                <TableCell>{page.topic}</TableCell>
+                <TableCell>{page.title}</TableCell>
+                <TableCell>{page.createdAt}</TableCell>
+                <TableCell>{page.createdBy}</TableCell>
+                <TableCell>{page.updatedAt}</TableCell>
+                <TableCell>{page.updatedBy}</TableCell>
+                <TableCell>{page.status}</TableCell>
+                <TableCell className="space-x-2">
+                  <Button variant="outline" size="sm">
+                    Edit
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    Preview
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }
