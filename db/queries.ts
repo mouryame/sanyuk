@@ -32,7 +32,7 @@ export const queries: Record<string, string> = {
     deletedAt TEXT
   )`,
 
-  insertPage: `INSERT INTO pages (topic, tags, title, content, status, createdAt, updatedAt, createdBy, updatedBy, deletedBy, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  insertPage: `INSERT INTO pages (pageId, topic, tags, title, content, status, createdAt, updatedAt, createdBy, updatedBy, deletedBy, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 
   updatePage: `UPDATE pages SET topic = ?, tags = ?, title = ?, content = ?, status = ?, updatedAt = ?, updatedBy = ? WHERE pageId = ?`,
 

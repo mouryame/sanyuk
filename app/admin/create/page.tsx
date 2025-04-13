@@ -1,11 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PageDetails from "./pageDetails";
 import PageContent from "./pageContent";
 
 export default function Page() {
   const [currentView, setCurrentView] = useState("details");
+
+  useEffect(() => {
+    const storedView = localStorage.getItem("currentView");
+    if (storedView) {
+      setCurrentView(storedView);
+    }
+  }, []);
 
   const views: Record<string, React.ReactNode> = {
     details: <PageDetails changeView={changeView} />,
@@ -14,6 +21,7 @@ export default function Page() {
 
   function changeView() {
     setCurrentView((prev) => (prev === "details" ? "content" : "details"));
+    localStorage.setItem("currentView", currentView);
   }
 
   return (

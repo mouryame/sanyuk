@@ -4,7 +4,7 @@ import logger from "@/utils/logger";
 
 const db = connect();
 
-export async function runQuery(queryKey: string) {
+export async function runQuery(queryKey: string, params?: any) {
   try {
     if (!queryKey) {
       throw new Error("Query key is required");
@@ -18,7 +18,10 @@ export async function runQuery(queryKey: string) {
 
     // Wrap db.run in a Promise to use async/await
     return new Promise((resolve, reject) => {
-      db.run(query, function (err) {
+      logger.log(
+        `Running query: ${query} with params: ${JSON.stringify(params)}`
+      );
+      db.run(query, params, function (err) {
         if (err) {
           return reject(err);
         }
