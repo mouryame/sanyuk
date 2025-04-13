@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import initialData from "@/data/dummy.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -51,26 +50,65 @@ export default function AdminPage() {
   const handleDeploy = () => {
     alert(`Deploying pages: ${selectedPages.join(", ")}`);
   };
+
   useEffect(() => {
     const localData = localStorage.getItem("pages");
     if (localData) {
       setPages(JSON.parse(localData));
       console.log("Local data loaded");
     } else {
-      localStorage.setItem("pages", JSON.stringify(initialData));
-      setPages(initialData as PageData[]);
+      const fetchPages = async () => {
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/fetchAllPages"
+          );
+          const data = await response.json();
+          setPages(data);
+          logger.log("DB fetched");
+          updateLocalStorage(data);
+        } catch (error) {
+          console.error("Error fetching pages:", error);
+        }
+      };
+      fetchPages();
     }
+
+    const intervalId = setInterval(() => {
+      localStorage.removeItem("pages");
+      logger.log("Local data removed");
+    }, 100 * 60 * 5);
+    return () => clearInterval(intervalId);
   }, []);
 
-  const updateLocalStorage = (newData: PageData[]) => {
-    localStorage.setItem("pages", JSON.stringify(newData));
+  const updateLocalStorage = (data: PageData[]) => {
+    localStorage.setItem("pages", JSON.stringify(data));
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    if (!selectedPages.length) {
+      alert("Please select at least one page");
+      return;
+    }
     const updated = pages.filter(
       (page) => !selectedPages.includes(page.pageId)
     );
-    logger.log("Row Deleted");
+    try {
+      const response = await fetch("http://localhost:3000/api/deletePage", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ pageId: selectedPages[0] }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete page");
+      }
+    } catch (error) {
+      console.error("Error deleting page:", error);
+      alert("Failed to delete page");
+    }
+
+    logger.log(updated, "Row Deleted");
     setPages(updated);
     updateLocalStorage(updated);
     setSelectedPages([]);

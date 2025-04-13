@@ -4,7 +4,7 @@ import logger from "@/utils/logger";
 
 const db = connect();
 
-export async function runQuery(queryKey: string) {
+export async function runQuery(queryKey: string, params?: any) {
   try {
     if (!queryKey) {
       throw new Error("Query key is required");
@@ -18,12 +18,24 @@ export async function runQuery(queryKey: string) {
 
     // Wrap db.run in a Promise to use async/await
     return new Promise((resolve, reject) => {
-      db.run(query, function (err) {
-        if (err) {
-          return reject(err);
-        }
-        resolve(this); // `this` is the context of the `run` call, which contains the last insert ID and changes
-      });
+      logger.log(
+        `Running query: ${query} with params: ${JSON.stringify(params)}`
+      );
+      if (queryKey.startsWith("get")) {
+        db.all(query, params, function (err, rows) {
+          if (err) {
+            return reject(err);
+          }
+          resolve(rows);
+        });
+      } else {
+        db.run(query, params, function (err) {
+          if (err) {
+            return reject(err);
+          }
+          resolve(this); // `this` is the context of the `run` call, which contains the last insert ID and changes
+        });
+      }
     });
   } catch (error) {
     logger.error("Error running query:", error);

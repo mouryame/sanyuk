@@ -13,7 +13,7 @@ function Navbar() {
             width={130}
             height={10}
             priority
-            className="h-15 object-cover"
+            className="h-15 w-auto object-cover"
           />
         </a>
         <div className="flex gap-2">
