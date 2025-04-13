@@ -83,3 +83,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+* {
+  font-family: var(--font-quicksand) !important;
+}
+
+button {
+  cursor: pointer;
+}
+
+#editorjs h1 {
+  @apply text-2xl font-bold;
+}
+
+#editorjs h2 {
+  @apply text-xl font-bold;
+}
