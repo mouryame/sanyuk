@@ -21,12 +21,21 @@ export async function runQuery(queryKey: string, params?: any) {
       logger.log(
         `Running query: ${query} with params: ${JSON.stringify(params)}`
       );
-      db.run(query, params, function (err) {
-        if (err) {
-          return reject(err);
-        }
-        resolve(this); // `this` is the context of the `run` call, which contains the last insert ID and changes
-      });
+      if (queryKey.startsWith("get")) {
+        db.all(query, params, function (err, rows) {
+          if (err) {
+            return reject(err);
+          }
+          resolve(rows);
+        });
+      } else {
+        db.run(query, params, function (err) {
+          if (err) {
+            return reject(err);
+          }
+          resolve(this); // `this` is the context of the `run` call, which contains the last insert ID and changes
+        });
+      }
     });
   } catch (error) {
     logger.error("Error running query:", error);

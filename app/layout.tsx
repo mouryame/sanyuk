@@ -22,10 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${quicksand.variable} antialiased`}>
-        <Navbar />
-        {children}
-
-        <div className="fixed bottom-0 h-30 w-full max-w-600 m-auto p-4">
+        <div className="fixed bg-black top-0 w-full max-w-600 m-auto p-4 z-10">
+          <Navbar />
+        </div>
+        <div className="mt-20">{children}</div>
+        <div className="bottom-0 h-30 w-full max-w-600 m-auto p-4">
           <Footer />
         </div>
       </body>
