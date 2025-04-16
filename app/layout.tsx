@@ -21,6 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Google AdSense script */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+          crossOrigin="anonymous"
+        ></script>
+      </head>
       <body className={`${quicksand.variable} antialiased`}>
         <div className="fixed bg-black top-0 w-full max-w-600 m-auto p-4 z-10">
           <Navbar />
